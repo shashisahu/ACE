@@ -1,32 +1,27 @@
-package pubsubwithwaitnotify;
+package pubsubwithBQ;
 
-import java.util.List;
 import java.util.concurrent.BlockingQueue;
 
-public class Producer implements Runnable {
-	List queue;
 
-	public Producer(List queue) {
+public class Producer<T> implements Runnable {
+	private BlockingQueue<Integer> queue;
+
+	public Producer(BlockingQueue<Integer> queue) {
+		super();
 		this.queue = queue;
 	}
 
 	@Override
 	public void run() {
-		synchronized (queue) {
-			int i = 0;
-			while (i<20) {
-				while (queue.size() >= 10)
-					try {
-						queue.wait();
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-				System.out.println("Producer produces :"+i);
-				queue.add(i);
+		int i=0;
+		while(i<=10)
+			try {
+				System.out.println("Producer Produces :"+i);
+				queue.put(i);
 				i++;
-				queue.notifyAll();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-		}
-
 	}
 }

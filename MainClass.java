@@ -1,14 +1,12 @@
-package pubsubwithwaitnotify;
+package pubsubwithBQ;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 
 public class MainClass {
+	private static BlockingQueue<Integer> queue=new ArrayBlockingQueue<>(10);
 	public static void main(String[] args) {
-		List queue= new ArrayList();
-		new Thread(new Producer(queue)).start();
-		new Thread(new Consumer(queue)).start();
-		
+		new Thread(new Producer<Integer>(queue)).start();
+		new Thread(new Consumer<Integer>(queue)).start();
 	}
-
 }

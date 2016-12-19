@@ -1,34 +1,25 @@
-package pubsubwithwaitnotify;
+package pubsubwithBQ;
 
-import java.util.List;
 import java.util.concurrent.BlockingQueue;
 
-public class Consumer implements Runnable {
-	List queue;
+
+public class Consumer<T> implements Runnable {
+	private BlockingQueue<T> queue;
 	
-	public Consumer(List queue) {
+	public Consumer(BlockingQueue<T> queue) {
 		super();
 		this.queue = queue;
 	}
 
 	@Override
 	public void run() {
-		synchronized (queue) {
-			while(true){
-				while(queue.isEmpty()){
-					try {
-						queue.wait();
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-				}
-				System.out.print("Consumer Consumes : ");
-				System.out.println(queue.remove(queue.size()-1));
-				queue.notifyAll();
-					
-			}
-			
+		while(true){
+		try {
+			System.out.println("Cosumer consumes : "+queue.take());
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-	}
+	}}
 
 }
